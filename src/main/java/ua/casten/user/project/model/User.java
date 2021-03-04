@@ -3,6 +3,7 @@ package ua.casten.user.project.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -27,6 +28,12 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id")
     private Role role;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "user_has_project",
+            inverseJoinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "project_id"))
+    private List<Project> projects;
 }
