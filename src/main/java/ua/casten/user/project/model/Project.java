@@ -23,6 +23,6 @@ public class Project {
     @OneToMany(mappedBy = "tasks")
     private List<Task> tasks;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "owners")
     private List<User> owners;
 }
