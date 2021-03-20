@@ -6,4 +6,9 @@ import ua.casten.user.project.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    User findUserById(Long userId);
+
+    User findUserByNickname(String nickname);
+
 }

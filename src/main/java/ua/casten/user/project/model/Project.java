@@ -22,10 +22,10 @@ public class Project {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "tasks")
+    @OneToMany(mappedBy = "project")
     private List<Task> tasks;
 
-    @ManyToMany(mappedBy = "owners")
+    @ManyToMany
     @JoinTable(name = "user_has_project",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))

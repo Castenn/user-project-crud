@@ -25,8 +25,8 @@ public class Task {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean isCompleted;
 
-    @Column(name = "priority")
-    @Enumerated(EnumType.STRING)
+    @Column(name = "priority_id")
+    @Enumerated(EnumType.ORDINAL)
     private Priority priority;
 
     @ManyToOne(fetch = FetchType.LAZY)
