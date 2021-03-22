@@ -30,7 +30,7 @@ public class User {
     private String password;
 
     @ManyToOne
-    @Column(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id")
     private Role role;
 
     @ManyToMany(cascade = CascadeType.MERGE)

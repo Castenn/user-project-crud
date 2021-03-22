@@ -22,7 +22,7 @@ public class Task {
     private boolean isCompleted;
 
     @ManyToOne
-    @Column(name = "priority_id")
+    @JoinColumn(name = "priority_id")
     private Priority priority;
 
     @ManyToOne(fetch = FetchType.LAZY)
