@@ -10,10 +10,6 @@ import javax.persistence.*;
 @Table(name = "tasks")
 public class Task {
 
-    private enum Priority {
-        LOW, MEDIUM, HIGH;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,8 +21,8 @@ public class Task {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean isCompleted;
 
+    @ManyToOne
     @Column(name = "priority_id")
-    @Enumerated(EnumType.ORDINAL)
     private Priority priority;
 
     @ManyToOne(fetch = FetchType.LAZY)

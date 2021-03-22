@@ -3,9 +3,9 @@ CREATE DATABASE IF NOT EXISTS crudup;
 USE crudup;
 DROP TABLE IF EXISTS roles;
 CREATE TABLE IF NOT EXISTS roles (
-     id BIGINT AUTO_INCREMENT,
-     name VARCHAR(50) NOT NULL UNIQUE,
-     PRIMARY KEY (id)
+                                     id BIGINT AUTO_INCREMENT,
+                                     name VARCHAR(50) NOT NULL UNIQUE,
+                                     PRIMARY KEY (id)
 );
 
 INSERT INTO roles (name) VALUES ('ADMIN');
@@ -13,13 +13,13 @@ INSERT INTO roles (name) VALUES ('USER');
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users (
-     id BIGINT AUTO_INCREMENT,
-     email VARCHAR(50) NOT NULL UNIQUE,
-     nickname VARCHAR(50) NOT NULL UNIQUE,
-     password VARCHAR(100) NOT NULL,
-     role_id BIGINT NOT NULL DEFAULT 2,
-     PRIMARY KEY (id),
-     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE
+                                     id BIGINT AUTO_INCREMENT,
+                                     email VARCHAR(50) NOT NULL UNIQUE,
+                                     nickname VARCHAR(50) NOT NULL UNIQUE,
+                                     password VARCHAR(100) NOT NULL,
+                                     role_id BIGINT NOT NULL DEFAULT 2,
+                                     PRIMARY KEY (id),
+                                     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO users (email, nickname, password, role_id) VALUES ('maingroon@gmail.com', 'casten', 'password', 1);
@@ -28,10 +28,10 @@ INSERT INTO users (email, nickname, password) VALUES ('test2@gmail.com', 'user2'
 
 DROP TABLE IF EXISTS projects;
 CREATE TABLE IF NOT EXISTS projects (
-    id BIGINT AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    PRIMARY KEY (id)
+                                        id BIGINT AUTO_INCREMENT,
+                                        name VARCHAR(100) NOT NULL,
+                                        description TEXT,
+                                        PRIMARY KEY (id)
 );
 
 INSERT INTO projects (name, description) VALUES ('Project1', 'description1');
@@ -42,10 +42,10 @@ INSERT INTO projects (name, description) VALUES ('Project5', 'description5');
 
 DROP TABLE IF EXISTS  user_has_project;
 CREATE TABLE IF NOT EXISTS user_has_project (
-    user_id BIGINT NOT NULL,
-    project_id BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE ON UPDATE CASCADE
+                                                user_id BIGINT NOT NULL,
+                                                project_id BIGINT NOT NULL,
+                                                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+                                                FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO user_has_project (user_id, project_id) VALUES (1, 1);
@@ -57,27 +57,27 @@ INSERT INTO user_has_project (user_id, project_id) VALUES (2, 5);
 INSERT INTO user_has_project (user_id, project_id) VALUES (3, 2);
 INSERT INTO user_has_project (user_id, project_id) VALUES (3, 4);
 
-DROP TABLE IF EXISTS priority;
-CREATE TABLE IF NOT EXISTS priority (
-    id BIGINT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL UNIQUE,
-    PRIMARY KEY (id)
+DROP TABLE IF EXISTS priorities;
+CREATE TABLE IF NOT EXISTS priorities (
+                                          id BIGINT NOT NULL AUTO_INCREMENT,
+                                          name VARCHAR(50) NOT NULL UNIQUE,
+                                          PRIMARY KEY (id)
 );
 
-INSERT INTO priority (name) VALUES ('LOW');
-INSERT INTO priority (name) VALUES ('MEDIUM');
-INSERT INTO priority (name) VALUES ('HIGH');
+INSERT INTO priorities (name) VALUES ('LOW');
+INSERT INTO priorities (name) VALUES ('MEDIUM');
+INSERT INTO priorities (name) VALUES ('HIGH');
 
 DROP TABLE IF EXISTS tasks;
 CREATE TABLE IF NOT EXISTS tasks (
-     id BIGINT NOT NULL AUTO_INCREMENT,
-     name VARCHAR(150) NOT NULL,
-     completed TINYINT NOT NULL DEFAULT 0,
-     priority_id BIGINT NOT NULL,
-     project_id BIGINT NOT NULL,
-     PRIMARY KEY (id),
-     FOREIGN KEY (priority_id) REFERENCES priority(id) ON DELETE CASCADE ON UPDATE CASCADE,
-     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE ON UPDATE CASCADE
+                                     id BIGINT NOT NULL AUTO_INCREMENT,
+                                     name VARCHAR(150) NOT NULL,
+                                     completed TINYINT NOT NULL DEFAULT 0,
+                                     priority_id BIGINT NOT NULL,
+                                     project_id BIGINT NOT NULL,
+                                     PRIMARY KEY (id),
+                                     FOREIGN KEY (priority_id) REFERENCES priorities(id) ON DELETE CASCADE ON UPDATE CASCADE,
+                                     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO tasks (name, completed, priority_id, project_id) VALUES ('Купить молоко', 0, 1, 1);

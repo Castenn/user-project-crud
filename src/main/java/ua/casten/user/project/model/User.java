@@ -11,10 +11,6 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
-    private enum Role {
-        USER, ADMIN
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,8 +29,8 @@ public class User {
     @Column(name = "password", length = 100, nullable = false)
     private String password;
 
-    @Enumerated(EnumType.ORDINAL)
-    @JoinColumn(name = "role_id")
+    @ManyToOne
+    @Column(name = "role_id", nullable = false)
     private Role role;
 
     @ManyToMany(cascade = CascadeType.MERGE)
