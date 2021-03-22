@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<div th:switch="${users}">
+<div th:switch="${users}" style="margin: 0 auto; width: max-content">
 
     <h2 th:case="null">No users found</h2>
     <div th:case="*">
@@ -14,25 +14,36 @@
         <table>
             <thead>
             <tr>
+                <th>No.</th>
                 <th>Id</th>
-                <th>Email</th>
                 <th>Nickname</th>
-                <th>Password</th>
+                <th>Email</th>
                 <th>Role</th>
+                <th colspan="2">Control</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${users}">
+            <tr th:each="user, stat : ${users}">
+                <td th:text="${stat.index + 1}"></td>
                 <td th:text="${user.id}"></td>
+                <td>
+                    <a th:href="@{|/todos/all/users/${user.id}|}" th:text="${user.nickname}"></a>
+                </td>
                 <td th:text="${user.email}"></td>
-                <td th:text="${user.nickname}"></td>
-                <td th:text="${user.password}"></td>
                 <td th:text="${user.role.name}"></td>
+                <td>
+                    <a th:href="@{|/users/${user.id}/update|}">Edit</a>
+                </td>
+                <td>
+                    <a th:href="@{|/users/${user.id}/delete|}">Delete</a>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
-
+    <form method="get" th:action="@{/users/create}">
+        <input type="submit" value="Create new User">
+    </form>
 </div>
 
 </body>
