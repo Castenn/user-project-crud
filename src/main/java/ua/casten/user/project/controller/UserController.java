@@ -1,5 +1,6 @@
 package ua.casten.user.project.controller;
 
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,14 +25,14 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @GetMapping("")
+    @GetMapping("/all")
     public String all(Model model) {
         List<User> users = userService.getAll();
         model.addAttribute("users", users);
         return "user-list";
     }
 
-    @GetMapping("{id}/read")
+    @GetMapping("/{id}/read")
     public String info(@PathVariable Long id,
                        Model model) {
         User user = userService.readById(id);
@@ -39,7 +40,22 @@ public class UserController {
         return "user-read";
     }
 
-    @GetMapping("{id}/update")
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("roles", roleService.getAll());
+        return "user-create";
+    }
+
+    @PostMapping("/create")
+    public String create(@ModelAttribute("user") User user,
+                         @RequestParam("roleId") Long roleId) {
+        user.setRole(roleService.readById(roleId));
+        userService.save(user);
+        return "redirect:/users/all";
+    }
+
+    @GetMapping("/{id}/update")
     public String update(@PathVariable Long id,
                          Model model) {
         User user = userService.readById(id);
@@ -49,7 +65,7 @@ public class UserController {
         return "user-update";
     }
 
-    @PostMapping("{id}/update")
+    @PostMapping("/{id}/update")
     public String update(@PathVariable Long id,
                          @ModelAttribute("user") User user,
                          @RequestParam("oldPassword") String oldPassword,
@@ -62,10 +78,10 @@ public class UserController {
         return "redirect:/users/" + id + "/read";
     }
 
-    @GetMapping("{id}/delete")
+    @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
         userService.delete(id);
-        return "redirect:/users";
+        return "redirect:/users/all";
     }
 
 }
