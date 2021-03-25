@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ua.casten.user.project.model.Project;
 import ua.casten.user.project.model.Role;
 import ua.casten.user.project.model.User;
+import ua.casten.user.project.service.ProjectService;
 import ua.casten.user.project.service.RoleService;
 import ua.casten.user.project.service.UserService;
 
@@ -17,11 +19,13 @@ public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final ProjectService projectService;
 
     @Autowired
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService, RoleService roleService, ProjectService projectService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.projectService = projectService;
     }
 
     @GetMapping("/all")
@@ -31,12 +35,22 @@ public class UserController {
         return "user-list";
     }
 
-    @GetMapping("/{id}/read")
+    @GetMapping("/{id}/info")
     public String info(@PathVariable Long id,
                        Model model) {
         User user = userService.readById(id);
         model.addAttribute("user", user);
         return "user-read";
+    }
+
+    @GetMapping("/{id}/read")
+    public String read(@PathVariable Long id,
+                       Model model) {
+        List<Project> projects = projectService.getByUserId(id);
+        User user = userService.readById(id);
+        model.addAttribute("projects", projects);
+        model.addAttribute("user", user);
+        return "user-projects";
     }
 
     @GetMapping("/create")

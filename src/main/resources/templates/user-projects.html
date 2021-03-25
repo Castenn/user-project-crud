@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.nickname} + Projects">User Projects</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/styles/styles.css">
+</head>
+<body>
+
+<div th:switch="${projects}" style="margin: 0 auto; width: max-content">
+    <br>
+    <h2 th:text="${user.nickname} + Projects">User Project</h2>
+    <br>
+    <h3 th:case="null">No Projects found</h3>
+    <table class="table" th:case="*">
+        <thead class="table-light">
+        <tr>
+            <th>No.</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Uncompleted tasks</th>
+            <th>Tasks</th>
+            <th colspan="2">Options</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="project, stat : ${projects}">
+            <td th:text="${stat.index + 1}"></td>
+            <td th:text="${project.id}"></td>
+            <td th:text="${project.name}"></td>
+            <td th:text="${project.getCountOfCUncompletedTasks()}"></td>
+            <td>
+                <a class="link-dark" th:href="@{|/projects/${project.id}/read|}">Tasks</a>
+            </td>
+            <td>
+                <a class="link-dark" th:href="@{|/projects/${project.id}/update/users/${user.id}|}">Edit</a>
+            </td>
+            <td>
+                <a class="link-dark" th:href="@{|/projects/${project.id}/delete/users/${user.id}|}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <form method="get" th:action="@{/projects/create/users/${user.id}}">
+        <input type="submit" class="btn btn-outline-dark" value="Create new Project" style="margin: 0 auto; display: block">
+    </form>
+</div>
+
+</body>
+</html>

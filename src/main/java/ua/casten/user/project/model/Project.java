@@ -30,4 +30,11 @@ public class Project {
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> owners;
+
+    public long getCountOfCUncompletedTasks() {
+        return tasks.stream()
+                .filter(t -> !t.isCompleted())
+                .count();
+    }
+
 }

@@ -17,8 +17,7 @@ public class Task {
     @Column(name = "name", length = 150, nullable = false)
     private String name;
 
-    @Column(name = "completed", nullable = false)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
+    @Column(name = "completed", columnDefinition = "TINYINT(1)", nullable = false)
     private boolean isCompleted;
 
     @ManyToOne
