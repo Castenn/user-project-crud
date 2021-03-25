@@ -11,12 +11,12 @@
 
 <div th:switch="${users}" style="margin: 0 auto; width: max-content">
     <br>
-    <h2 th:case="null" style="text-align:center">No users found</h2>
+    <h2 th:case="${users == null || users.isEmpty()}" style="text-align:center">No users found</h2>
     <div th:case="*">
         <h2 style="text-align:center">Users</h2>
         <br>
         <table class="table">
-            <thead class="table-light">
+            <thead class="table-light" style="text-align: center">
             <tr>
                 <th>No.</th>
                 <th>Id</th>
@@ -36,13 +36,13 @@
                 </td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.role.name}"></td>
-                <td>
+                <td style="text-align: center">
                     <a class="link-dark" th:href="@{|/users/${user.id}/read|}">Projects</a>
                 </td>
-                <td>
+                <td style="text-align: center">
                     <a class="link-dark" th:href="@{|/users/${user.id}/update|}">Edit</a>
                 </td>
-                <td>
+                <td style="text-align: center">
                     <a class="link-dark" th:href="@{|/users/${user.id}/delete|}">Delete</a>
                 </td>
             </tr>
@@ -50,7 +50,8 @@
         </table>
     </div>
     <form method="get" th:action="@{/users/create}">
-        <input type="submit" class="btn btn-outline-dark" value="Create new User" style="margin: 0 auto; display: block">
+        <input type="submit" class="btn btn-outline-dark" value="Create new User"
+               style="margin: 0 auto; display: block">
     </form>
 </div>
 

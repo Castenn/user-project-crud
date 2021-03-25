@@ -1,7 +1,6 @@
 package ua.casten.user.project.model;
 
 import lombok.Data;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -17,7 +16,7 @@ public class Task {
     @Column(name = "name", length = 150, nullable = false)
     private String name;
 
-    @Column(name = "completed", columnDefinition = "TINYINT(1)", nullable = false)
+    @Column(name = "completed",  nullable = false)
     private boolean isCompleted;
 
     @ManyToOne

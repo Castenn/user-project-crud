@@ -11,7 +11,7 @@
 
 <div style="margin: 0 auto; width: max-content">
     <br>
-    <h2 style="text-align:center"></h2>
+    <h2 style="text-align:center">Create new User</h2>
     <br>
     <form th:action="@{/users/create}" method="post" th:object="${user}">
         <table class="table">
@@ -45,7 +45,7 @@
                 </td>
                 <td>
                     <select name="roleId" id="role" class="form-select">
-                    <span th:each="role : ${roles}">
+                        <span th:each="role : ${roles}">
                         <option th:value="${role.id}"
                                 th:text="${role.name.substring(0, 1) + role.name.substring(1).toLowerCase()}"></option>
                     </span>
@@ -53,6 +53,8 @@
                 </td>
             </tr>
         </table>
+        <a href="/users/all" class="btn btn-outline-dark" style="margin: 0 auto; display: block">All Users</a>
+        <br>
         <input type="submit" class="btn btn-outline-dark" value="Create" style="margin: 0 auto; display: block">
     </form>
 </div>

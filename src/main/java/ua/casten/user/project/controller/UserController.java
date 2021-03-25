@@ -40,7 +40,7 @@ public class UserController {
                        Model model) {
         User user = userService.readById(id);
         model.addAttribute("user", user);
-        return "user-read";
+        return "user-info";
     }
 
     @GetMapping("/{id}/read")
