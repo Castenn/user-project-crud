@@ -17,12 +17,12 @@
     <table class="table" th:case="*" style="text-align: center">
         <thead class="table-light">
         <tr>
-            <th>No.</th>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Uncompleted tasks</th>
-            <th>Tasks</th>
-            <th colspan="2">Options</th>
+            <th id="number">No.</th>
+            <th id="id">Id</th>
+            <th id="name">Name</th>
+            <th id="u_tasks">Uncompleted tasks</th>
+            <th id="tasks">Tasks</th>
+            <th colspan="2" id="options">Options</th>
         </tr>
         </thead>
 
@@ -33,7 +33,7 @@
             <td th:text="${project.name}"></td>
             <td th:text="${project.getCountOfCUncompletedTasks()}"></td>
             <td>
-                <a class="link-dark" th:href="@{|/projects/${project.id}/read|}">Tasks</a>
+                <a class="link-dark" th:href="@{|/projects/${project.id}/read/users/${user.id}|}">Tasks</a>
             </td>
             <td>
                 <a class="link-dark" th:href="@{|/projects/${project.id}/update/users/${user.id}|}">Edit</a>
@@ -46,7 +46,7 @@
     </table>
     <a href="/users/all" class="btn btn-outline-dark" style="margin: 0 auto; display: block">All Users</a>
     <br>
-    <form method="get" th:action="@{/projects/create/users/${user.id}}">
+    <form method="get" th:action="@{|/projects/create/users/${user.id}|}">
         <input type="submit" class="btn btn-outline-dark" value="Create new Project" style="margin: 0 auto; display: block">
     </form>
 </div>

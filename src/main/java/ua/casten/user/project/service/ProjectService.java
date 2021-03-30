@@ -56,4 +56,11 @@ public class ProjectService {
         return projectRepository.findProjectByOwnerId(userId);
     }
 
+    public boolean userHaveProject(Long userId, Long projectId) {
+        List<Project> userProjects = getByUserId(userId);
+        Project project = readById(projectId);
+
+        return userProjects.contains(project);
+    }
+
 }
