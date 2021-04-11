@@ -13,7 +13,7 @@
     <br>
     <h2>Create new Project</h2>
     <br>
-    <form th:action="@{|/projects/create/users/${userId}|}" method="post" th:object="${project}">
+    <form th:action="@{|user/${userId}/project/create|}" method="post" th:object="${project}">
         <table class="table">
             <tr>
                 <td>
@@ -33,7 +33,7 @@
             </tr>
         </table>
         <div>
-            <a th:href="@{|/users/${userId}/read|}" class="btn btn-outline-dark"
+            <a th:href="@{|/user/${userId}|}" class="btn btn-outline-dark"
                style="margin: 0 auto; display: block">All my Projects</a>
         </div>
         <br>

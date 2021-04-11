@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ua.casten.user.project.model.Project;
 import ua.casten.user.project.model.Role;
 import ua.casten.user.project.model.User;
 import ua.casten.user.project.service.ProjectService;
@@ -14,18 +13,17 @@ import ua.casten.user.project.service.UserService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final ProjectService projectService;
 
     @Autowired
-    public UserController(UserService userService, RoleService roleService, ProjectService projectService) {
+    public UserController(UserService userService,
+                          RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.projectService = projectService;
     }
 
     @GetMapping("/all")
@@ -35,22 +33,12 @@ public class UserController {
         return "user-list";
     }
 
-    @GetMapping("/{id}/info")
+    @GetMapping("/{id}")
     public String info(@PathVariable Long id,
                        Model model) {
         User user = userService.readById(id);
         model.addAttribute("user", user);
         return "user-info";
-    }
-
-    @GetMapping("/{id}/read")
-    public String read(@PathVariable Long id,
-                       Model model) {
-        List<Project> projects = projectService.getByUserId(id);
-        User user = userService.readById(id);
-        model.addAttribute("projects", projects);
-        model.addAttribute("user", user);
-        return "user-projects";
     }
 
     @GetMapping("/create")
@@ -65,7 +53,7 @@ public class UserController {
                          @RequestParam("roleId") Long roleId) {
         user.setRole(roleService.readById(roleId));
         userService.save(user);
-        return "redirect:/users/all";
+        return "redirect:/user/all";
     }
 
     @GetMapping("/{id}/update")
@@ -88,13 +76,13 @@ public class UserController {
             user.setRole(roleService.readById(roleId));
             userService.save(user);
         }
-        return "redirect:/users/" + id + "/read";
+        return "redirect:/user/" + id;
     }
 
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
         userService.delete(id);
-        return "redirect:/users/all";
+        return "redirect:/user/all";
     }
 
 }

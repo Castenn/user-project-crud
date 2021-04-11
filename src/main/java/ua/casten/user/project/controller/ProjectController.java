@@ -7,28 +7,36 @@ import org.springframework.web.bind.annotation.*;
 import ua.casten.user.project.model.Project;
 import ua.casten.user.project.model.User;
 import ua.casten.user.project.service.ProjectService;
-import ua.casten.user.project.service.TaskService;
 import ua.casten.user.project.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/projects")
+@RequestMapping("/user/{userId}/project")
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final TaskService taskService;
     private final UserService userService;
 
     @Autowired
-    public ProjectController(ProjectService projectService, TaskService taskService, UserService userService) {
+    public ProjectController(ProjectService projectService,
+                             UserService userService) {
         this.projectService = projectService;
-        this.taskService = taskService;
         this.userService = userService;
     }
 
-    @GetMapping("/create/users/{userId}")
+    @GetMapping("/all")
+    public String read(@PathVariable("userId") Long userId,
+                       Model model) {
+        List<Project> projects = projectService.getByUserId(userId);
+        User user = userService.readById(userId);
+        model.addAttribute("projects", projects);
+        model.addAttribute("user", user);
+        return "user-projects";
+    }
+
+    @GetMapping("/create")
     public String create(@PathVariable("userId") Long userId,
                          Model model) {
         model.addAttribute("project", new Project());
@@ -36,23 +44,37 @@ public class ProjectController {
         return "project-create";
     }
 
-    @PostMapping("/create/users/{userId}")
+    @PostMapping("/create")
     public String create(@PathVariable("userId") Long userId,
                          @ModelAttribute("project") Project project) {
         List<User> ownerList = new ArrayList<>();
         ownerList.add(userService.readById(userId));
         project.setOwners(ownerList);
         projectService.create(project);
-        return "redirect:/users/" + userId + "/read";
+        return "redirect:/user/" + userId + "/project/all";
     }
 
-    @GetMapping("/{projectId}/update/users/{userId}")
+    @GetMapping("/{projectId}")
+    public String info(@PathVariable("projectId") Long projectId,
+                       @PathVariable("userId") Long userId,
+                       Model model) {
+        if (!projectService.userHaveProject(userId, projectId)) {
+            return "redirect:/user/" + userId + "/project/all";
+        }
+
+        Project project = projectService.readById(projectId);
+
+        model.addAttribute("project", project);
+        model.addAttribute("userId", userId);
+        return "project-info";
+    }
+
+    @GetMapping("/{projectId}/update")
     public String update(@PathVariable("projectId") Long projectId,
                          @PathVariable("userId") Long userId,
                          Model model) {
-
         if (!projectService.userHaveProject(userId, projectId)) {
-            return "redirect:/users/" + userId + "/read";
+            return "redirect:/user/" + userId + "/project/all";
         }
 
         Project project = projectService.readById(projectId);
@@ -62,7 +84,7 @@ public class ProjectController {
         return "project-update";
     }
 
-    @PostMapping("/{projectId}/update/users/{userId}")
+    @PostMapping("/{projectId}/update")
     public String update(@PathVariable("projectId") Long projectId,
                          @PathVariable("userId") Long userId,
                          @ModelAttribute("project") Project updatedProject) {
@@ -74,10 +96,10 @@ public class ProjectController {
             projectService.create(updatedProject);
         }
 
-        return "redirect:/users/" + userId + "/read";
+        return "redirect:/user/" + userId + "/project/" + projectId;
     }
 
-    @GetMapping("/{projectId}/delete/users/{userId}")
+    @GetMapping("/{projectId}/delete")
     public String delete(@PathVariable("projectId") Long projectId,
                          @PathVariable("userId") Long userId) {
 
@@ -85,7 +107,7 @@ public class ProjectController {
             projectService.delete(projectId);
         }
 
-        return "redirect:/users/" + userId + "/read";
+        return "redirect:/user/" + userId + "/project/all";
     }
 
 }

@@ -32,24 +32,24 @@
                 <td th:text="${stat.index + 1}"></td>
                 <td th:text="${user.id}"></td>
                 <td>
-                    <a class="link-dark" th:href="@{|/users/${user.id}/info|}" th:text="${user.nickname}"></a>
+                    <a class="link-dark" th:href="@{|/user/${user.id}|}" th:text="${user.nickname}"></a>
                 </td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.role.name}"></td>
                 <td style="text-align: center">
-                    <a class="link-dark" th:href="@{|/users/${user.id}/read|}">Projects</a>
+                    <a class="link-dark" th:href="@{|/user/${user.id}/project/all|}">Projects</a>
                 </td>
                 <td style="text-align: center">
-                    <a class="link-dark" th:href="@{|/users/${user.id}/update|}">Edit</a>
+                    <a class="link-dark" th:href="@{|/user/${user.id}/update|}">Edit</a>
                 </td>
                 <td style="text-align: center">
-                    <a class="link-dark" th:href="@{|/users/${user.id}/delete|}">Delete</a>
+                    <a class="link-dark" th:href="@{|/user/${user.id}/delete|}">Delete</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <form method="get" th:action="@{/users/create}">
+    <form method="get" th:action="@{/user/create}">
         <input type="submit" class="btn btn-outline-dark" value="Create new User"
                style="margin: 0 auto; display: block">
     </form>

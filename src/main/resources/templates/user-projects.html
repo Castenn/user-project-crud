@@ -30,24 +30,28 @@
         <tr th:each="project, stat : ${projects}">
             <td th:text="${stat.index + 1}"></td>
             <td th:text="${project.id}"></td>
-            <td th:text="${project.name}"></td>
+            <td>
+                <a class="link-dark" th:href="@{|/user/${user.id}/project/${project.id}|}"
+                   th:text="${project.name}"></a>
+            </td>
             <td th:text="${project.getCountOfCUncompletedTasks()}"></td>
             <td>
-                <a class="link-dark" th:href="@{|/projects/${project.id}/read/users/${user.id}|}">Tasks</a>
+                <a class="link-dark" th:href="@{|/user/${user.id}/project/${project.id}/task/all|}">Tasks</a>
             </td>
             <td>
-                <a class="link-dark" th:href="@{|/projects/${project.id}/update/users/${user.id}|}">Edit</a>
+                <a class="link-dark" th:href="@{|/user/${user.id}/project/${project.id}/update|}">Edit</a>
             </td>
             <td>
-                <a class="link-dark" th:href="@{|/projects/${project.id}/delete/users/${user.id}|}">Delete</a>
+                <a class="link-dark" th:href="@{|/user/${user.id}/project/${project.id}/delete|}">Delete</a>
             </td>
         </tr>
         </tbody>
     </table>
-    <a href="/users/all" class="btn btn-outline-dark" style="margin: 0 auto; display: block">All Users</a>
+    <a href="/user/all" class="btn btn-outline-dark" style="margin: 0 auto; display: block">All Users</a>
     <br>
-    <form method="get" th:action="@{|/projects/create/users/${user.id}|}">
-        <input type="submit" class="btn btn-outline-dark" value="Create new Project" style="margin: 0 auto; display: block">
+    <form method="get" th:action="@{|/user/${user.id}/project/create|}">
+        <input type="submit" class="btn btn-outline-dark" value="Create new Project"
+               style="margin: 0 auto; display: block">
     </form>
 </div>
 
