@@ -20,7 +20,7 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task create(Task task) {
+    public Task save(Task task) {
         if (task == null) {
             throw new NullEntityReferenceException("Null task object in create.");
         }
@@ -54,6 +54,13 @@ public class TaskService {
             throw new IllegalArgumentException(EXCEPTION_ID_PARAMETER);
         }
         return taskRepository.findTasksByProjectId(projectId);
+    }
+
+    public List<Task> getByProjectIdAndCompleted(Long projectId, boolean completed) {
+        if (projectId <= 0) {
+            throw new IllegalArgumentException(EXCEPTION_ID_PARAMETER);
+        }
+        return taskRepository.findTasksByProjectIdAndCompleted(projectId, completed);
     }
 
 }

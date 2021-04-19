@@ -17,7 +17,7 @@ public class Task {
     private String name;
 
     @Column(name = "completed",  nullable = false)
-    private boolean isCompleted;
+    private boolean completed;
 
     @ManyToOne
     @JoinColumn(name = "priority_id")

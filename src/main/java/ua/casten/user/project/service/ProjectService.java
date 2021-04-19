@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.casten.user.project.exception.NullEntityReferenceException;
 import ua.casten.user.project.model.Project;
+import ua.casten.user.project.model.Task;
 import ua.casten.user.project.model.repository.ProjectRepository;
+import ua.casten.user.project.model.repository.TaskRepository;
+import ua.casten.user.project.model.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,13 +17,15 @@ public class ProjectService {
     private static final String EXCEPTION_ID_PARAMETER = "Id parameter less or equals 0.";
 
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
         this.projectRepository = projectRepository;
+        this.taskRepository = taskRepository;
     }
 
-    public Project create(Project project) {
+    public Project save(Project project) {
         if (project == null) {
             throw new NullEntityReferenceException("Null project object in create.");
         }
@@ -56,11 +61,11 @@ public class ProjectService {
         return projectRepository.findProjectByOwnerId(userId);
     }
 
-    public boolean userHaveProject(Long userId, Long projectId) {
-        List<Project> userProjects = getByUserId(userId);
-        Project project = readById(projectId);
+    public boolean projectHasTask(Long projectId, Long taskId) {
+        List<Task> projectTasks = taskRepository.findTasksByProjectId(projectId);
+        Task task = taskRepository.getOne(taskId);
 
-        return userProjects.contains(project);
+        return projectTasks.contains(task);
     }
 
 }

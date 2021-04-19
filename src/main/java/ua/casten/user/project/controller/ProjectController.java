@@ -33,14 +33,13 @@ public class ProjectController {
         User user = userService.readById(userId);
         model.addAttribute("projects", projects);
         model.addAttribute("user", user);
-        return "user-projects";
+        return "project-list";
     }
 
     @GetMapping("/create")
     public String create(@PathVariable("userId") Long userId,
                          Model model) {
         model.addAttribute("project", new Project());
-        model.addAttribute("userId", userId);
         return "project-create";
     }
 
@@ -50,7 +49,7 @@ public class ProjectController {
         List<User> ownerList = new ArrayList<>();
         ownerList.add(userService.readById(userId));
         project.setOwners(ownerList);
-        projectService.create(project);
+        projectService.save(project);
         return "redirect:/user/" + userId + "/project/all";
     }
 
@@ -58,14 +57,13 @@ public class ProjectController {
     public String info(@PathVariable("projectId") Long projectId,
                        @PathVariable("userId") Long userId,
                        Model model) {
-        if (!projectService.userHaveProject(userId, projectId)) {
+        if (!userService.userHasProject(userId, projectId)) {
             return "redirect:/user/" + userId + "/project/all";
         }
 
         Project project = projectService.readById(projectId);
 
         model.addAttribute("project", project);
-        model.addAttribute("userId", userId);
         return "project-info";
     }
 
@@ -73,14 +71,13 @@ public class ProjectController {
     public String update(@PathVariable("projectId") Long projectId,
                          @PathVariable("userId") Long userId,
                          Model model) {
-        if (!projectService.userHaveProject(userId, projectId)) {
+        if (!userService.userHasProject(userId, projectId)) {
             return "redirect:/user/" + userId + "/project/all";
         }
 
         Project project = projectService.readById(projectId);
 
         model.addAttribute("project", project);
-        model.addAttribute("userId", userId);
         return "project-update";
     }
 
@@ -89,11 +86,11 @@ public class ProjectController {
                          @PathVariable("userId") Long userId,
                          @ModelAttribute("project") Project updatedProject) {
 
-        if (projectService.userHaveProject(userId, projectId)) {
+        if (userService.userHasProject(userId, projectId)) {
             Project project = projectService.readById(projectId);
             updatedProject.setOwners(project.getOwners());
             updatedProject.setId(projectId);
-            projectService.create(updatedProject);
+            projectService.save(updatedProject);
         }
 
         return "redirect:/user/" + userId + "/project/" + projectId;
@@ -103,7 +100,7 @@ public class ProjectController {
     public String delete(@PathVariable("projectId") Long projectId,
                          @PathVariable("userId") Long userId) {
 
-        if (projectService.userHaveProject(userId, projectId)) {
+        if (userService.userHasProject(userId, projectId)) {
             projectService.delete(projectId);
         }
 

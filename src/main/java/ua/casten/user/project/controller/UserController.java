@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ua.casten.user.project.model.Project;
 import ua.casten.user.project.model.Role;
 import ua.casten.user.project.model.User;
-import ua.casten.user.project.service.ProjectService;
 import ua.casten.user.project.service.RoleService;
 import ua.casten.user.project.service.UserService;
 
@@ -33,10 +33,10 @@ public class UserController {
         return "user-list";
     }
 
-    @GetMapping("/{id}")
-    public String info(@PathVariable Long id,
+    @GetMapping("/{userId}")
+    public String info(@PathVariable Long userId,
                        Model model) {
-        User user = userService.readById(id);
+        User user = userService.readById(userId);
         model.addAttribute("user", user);
         return "user-info";
     }
@@ -56,32 +56,34 @@ public class UserController {
         return "redirect:/user/all";
     }
 
-    @GetMapping("/{id}/update")
-    public String update(@PathVariable Long id,
+    @GetMapping("/{userId}/update")
+    public String update(@PathVariable Long userId,
                          Model model) {
-        User user = userService.readById(id);
+        User user = userService.readById(userId);
         List<Role> roles = roleService.getAll();
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
         return "user-update";
     }
 
-    @PostMapping("/{id}/update")
-    public String update(@PathVariable Long id,
+    @PostMapping("/{userId}/update")
+    public String update(@PathVariable Long userId,
                          @ModelAttribute("user") User user,
                          @RequestParam("oldPassword") String oldPassword,
                          @RequestParam("roleId") Long roleId) {
-        User oldUser = userService.readById(id);
+        User oldUser = userService.readById(userId);
+        List<Project> userProjects = oldUser.getProjects();
         if (oldUser.getPassword().equals(oldPassword)) {
             user.setRole(roleService.readById(roleId));
+            user.setProjects(userProjects);
             userService.save(user);
         }
-        return "redirect:/user/" + id;
+        return "redirect:/user/" + userId;
     }
 
-    @GetMapping("/{id}/delete")
-    public String delete(@PathVariable Long id) {
-        userService.delete(id);
+    @GetMapping("/{userId}/delete")
+    public String delete(@PathVariable Long userId) {
+        userService.delete(userId);
         return "redirect:/user/all";
     }
 
